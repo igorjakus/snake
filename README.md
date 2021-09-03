@@ -20,6 +20,7 @@ Use the package manager [pip](https://pip.pypa.io/en/stable/) to install package
 pip install pygame
 pip install toml
 ```
+After the installation you can properly run game.py and start the game!
 
 ## License
 [MIT](https://choosealicense.com/licenses/mit/)
