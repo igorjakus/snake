@@ -1,0 +1,11 @@
+# Speed of game (1.0 default)
+speed = 1.0
+
+# Window size (in length of single square in pixels)
+# Window is 40x40 of squares. Default square size is 20 pixels
+unit = 20
+
+# Colors settings (RGB)
+snake_color = [50, 205, 50] # limegreen
+apple_color =  [178, 34, 34] # firebrick
+bg_color = [0, 0, 0]
