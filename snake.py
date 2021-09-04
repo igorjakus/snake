@@ -22,6 +22,9 @@ class Square:
         self.x = x
         self.y = y
 
+    def position(self):
+        return self.x, self.y
+
 
 class Snake:
     def __init__(self, apple):
@@ -53,26 +56,29 @@ class Snake:
             self.body.pop()
 
     def eat_apple(self):
-        x, y = self.body[0].x, self.body[0].y
-        if x == self.apple.x and y == self.apple.y:
+        head = self.body[0]
+        if head.position() == self.apple.position():
             self.apple.move()
             return True
 
-    def check_lose(self):
-        x, y = self.body[0].x, self.body[0].y
-
-        # check collision with himself
+    def hit_own_body(self):
+        head = self.body[0]
         for part in self.body[1:]:
-            if part.x == x and part.y == y:
+            if head.position() == part.position():
                 return True
+        return False
 
-        # check collision with screen
+    def hit_screen(self):
+        x, y = self.body[0].position()
         if x < 0 or x > unit * 39:
             return True
         elif y < 0 or y > unit * 39:
             return True
+        else:
+            return False
 
-        return False
+    def check_lose(self):
+        return self.hit_own_body() or self.hit_screen()
 
 
 class Apple:
@@ -82,6 +88,9 @@ class Apple:
 
     def move(self):
         self.x, self.y = self.rand_pos()
+
+    def position(self):
+        return self.x, self.y
 
     @staticmethod
     def rand_pos():
