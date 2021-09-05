@@ -26,5 +26,8 @@ pip install toml
 ```
 After the installation you can properly run game.py and start the game!
 
+## Settings
+* settings.toml
+
 ## License
 [MIT](https://choosealicense.com/licenses/mit/)
