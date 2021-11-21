@@ -2,7 +2,8 @@ import pygame
 import toml
 
 from sys import exit
-from snake import Snake, Apple
+from snake import Snake
+from apple import Apple
 
 
 KEYBOARD = {
@@ -45,7 +46,7 @@ class Game:
                     self.snake.move()
                     if self.snake.check_lose():
                         self.snake.reset()
-                        self.apple.move()
+                        self.apple.set_random_position()
                         self.pause = True
 
                 self._update_screen()
@@ -58,6 +59,8 @@ class Game:
             self.window = (self.unit * 40, self.unit * 40)
             self.game_speed = 1000.0 / settings['speed']
             self.bg_color = tuple(settings['bg_color'])
+            self.snake_color = tuple(settings['snake_color'])
+            self.apple_color = tuple(settings['apple_color'])
 
     def _check_events(self):
         for event in pygame.event.get():
@@ -78,22 +81,28 @@ class Game:
             self.pause = True
 
     def _blit_snake(self):
+        rect_size = (self.unit, self.unit)
         for part in self.snake.body:
-            pygame.draw.rect(self.screen, self.snake.color,
-                             (part.x, part.y, self.unit, self.unit))
+            position = (part.x * self.unit, part.y * self.unit)
+            pygame.draw.rect(self.screen, self.snake_color,
+                             (*position, *rect_size))
 
     def _blit_apple(self):
-        pygame.draw.rect(self.screen, self.apple.color,
-                         (self.apple.x, self.apple.y, self.unit, self.unit))
+        rect_size = (self.unit, self.unit)
+        position = (self.apple.x * self.unit, self.apple.y * self.unit)
+        pygame.draw.rect(self.screen, self.apple_color,
+                         (*position, *rect_size))
 
     def _blit_score(self):
         # scaling font size
-        font_size = int(self.window[0] // 28.5)  # 28 default
+        WINDOW_TO_FONT_SIZE_RATIO = 28.5
+        font_size = int(self.window[0] // WINDOW_TO_FONT_SIZE_RATIO)
         font = pygame.font.Font('fonts/RobotoMono.ttf', font_size)
         text = font.render(f'score: {self.snake.score}', True, (255, 255, 255))
 
         # scaling text position
-        text_positon = (int(self.window[0]*0.75), 0)
+        TEXT_POSITION_RATIO = 0.75
+        text_positon = (int(self.window[0]*TEXT_POSITION_RATIO), 0)
         self.screen.blit(text, text_positon)
 
     def _update_screen(self):
